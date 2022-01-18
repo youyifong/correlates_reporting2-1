@@ -31,7 +31,7 @@ draw.ve.curves=function(a, TRIALS, file.name, include.az=FALSE) {
     hist.shrink=1/c(ADCP=2,pseudoneutid50=1.2,bindSpike=1.3,bindRBD=1.3)
     
     all.trials=c("moderna_real", "janssen_pooled_real", "janssen_na_real", "janssen_la_real", "janssen_sa_real", "AZ-COV002")
-    studies=c("COVE","ENSEMBLE","ENSEMBLE NA","ENSEMBLE LA","ENSEMBLE SA","AZ-COV002"); names(studies)=all.trials
+    studies=c("COVE","ENSEMBLE","ENSEMBLE US","ENSEMBLE LA","ENSEMBLE SA","AZ-COV002"); names(studies)=all.trials
     cols=  c("blue","green","green","olivedrab3","darkseagreen4","orange"); names(cols)=all.trials
     hist.col.ls=lapply(cols, function(col) {hist.col <- c(col2rgb(col)); rgb(hist.col[1], hist.col[2], hist.col[3], alpha=255*0.3, maxColorValue=255)})
     
@@ -66,7 +66,7 @@ draw.ve.curves=function(a, TRIALS, file.name, include.az=FALSE) {
     xlim=c(min(sapply(xlim.ls, function(x) x[1])), max(sapply(xlim.ls, function(x) x[2])))
     myprint(xlim)
     
-    mypdf(file=paste0("output/meta/meta_controlled_ve_curves_",file.name,"_",a))
+    mypdf(file=paste0("output/meta/meta_controlled_ve_curves_",file.name,"_",a), width=5.2, height=5.2)
         par(las=1, cex.axis=0.9, cex.lab=1)# axis label orientation
         
         # need several variables from sourcing _common.R: lloxs, labels.assays, draw.x.axis.cor
@@ -127,12 +127,22 @@ for (a in c("pseudoneutid50","bindSpike","bindRBD")) {
 
 
 # COVE + ENSEMBLE regions
-for (a in c("pseudoneutid50","bindSpike","bindRBD","ADCP")) {
-    draw.ve.curves(a, TRIALS=c(if(a!="ADCP") "moderna_real", "janssen_na_real", "janssen_la_real", "janssen_sa_real"), file.name="2", include.az=F)
+for (a in c("pseudoneutid50","bindSpike","bindRBD")) {
+    draw.ve.curves(a, TRIALS=c("moderna_real", "janssen_na_real", "janssen_la_real", "janssen_sa_real"), file.name="2", include.az=F)
 }
 
 
 # ENSEMBLE regions
 for (a in c("pseudoneutid50","bindSpike","bindRBD","ADCP")) {
     draw.ve.curves(a, TRIALS=c("janssen_na_real", "janssen_la_real", "janssen_sa_real"), file.name="3", include.az=F)
+}
+
+# COVE + ENSEMBLE/US + AZ
+for (a in c("pseudoneutid50","bindSpike","bindRBD")) {
+    draw.ve.curves(a, TRIALS=c("moderna_real", "janssen_na_real"), file.name="4", include.az=T)
+}
+
+# COVE + ENSEMBLE/US
+for (a in c("pseudoneutid50","bindSpike","bindRBD")) {
+    draw.ve.curves(a, TRIALS=c("moderna_real", "janssen_na_real"), file.name="5", include.az=F)
 }
